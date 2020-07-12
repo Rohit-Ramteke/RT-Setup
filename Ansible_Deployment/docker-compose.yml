@@ -1,0 +1,56 @@
+version: '2'
+services:
+  prometheus:
+    image: prom/prometheus
+    #ports:
+    #  - '8142:9090'
+    container_name: prometheus
+    restart: always
+    network_mode: host
+    volumes:
+      - '$HOME/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+      - '$HOME/prometheus/rules.yml:/etc/prometheus/rules.yml'
+  grafana:
+    user: '472'
+    image: kartik468/grafana:v7.0.1
+    #ports:
+    #  - '5222:3000'
+    container_name: grafana
+    restart: always
+    network_mode: host
+    depends_on:
+      - prometheus
+    volumes:
+      - '$HOME/grafana/grafana_storage:/var/lib/grafana/'
+      - '$HOME/grafana/config/grafana.ini:/etc/grafana/grafana.ini'
+      - '$HOME/grafana/provisioning/:/etc/grafana/provisioning/'
+  portainer:
+    image: portainer/portainer
+    ports:
+      - '5432:9000'
+      - '5269:8000'
+    container_name: portainer
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '$HOME/portainer_data:/data'
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - '5601:8080'
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+  alertmanager:
+    image: prom/alertmanager
+    network_mode: host
+    container_name: alertmanager
+    volumes:
+      - '$HOME/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml'
+    #ports:
+    #  - '9093:9093'
+    restart: always
+

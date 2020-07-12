@@ -1,0 +1,36 @@
+{
+  "type": "panel",
+  "name": "ct-alerts-table",
+  "id": "citiustech-ct-alerts-table",
+  "info": {
+    "description": "show prometheus alerts",
+    "author": {
+      "name": "KartikR",
+      "url": ""
+    },
+    "keywords": [
+      "prometheus alerts"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/simple-react-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/simple-react-panel/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "6.3.x",
+    "plugins": []
+  }
+}

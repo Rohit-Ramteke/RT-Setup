@@ -1,0 +1,10 @@
+- name: Execute the Deployment 
+  hosts: server
+  become: yes
+  become_user: root
+  tasks:
+   - name: Deployment started
+     shell: /home/cloud_user/Ansible_Deployment/deployment_ansible_script.sh
+
+  # - name: Installing node_exporter
+  #   shell: /home/cloud_user/Ansible_Deployment/node_exporter.sh

@@ -1,0 +1,36 @@
+{
+  "type": "panel",
+  "name": "ct-alert-panel-plugin",
+  "id": "ct-ct-alert-panel-plugin",
+  "info": {
+    "description": "shows prometheus alerts, when 'ALERTS' metric is provided",
+    "author": {
+      "name": "kartik468",
+      "url": ""
+    },
+    "keywords": [
+      "prometheus_alerts"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/simple-react-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/simple-react-panel/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "6.3.x",
+    "plugins": []
+  }
+}

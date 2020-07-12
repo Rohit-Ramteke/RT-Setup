@@ -1,0 +1,88 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'example'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+
+scrape_configs:
+
+  - job_name: 'prometheus'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # - job_name: 'JMX_Expoter'
+  #   scrape_interval: 15s
+  #   static_configs:
+  #     - targets: ['localhost:7077']
+
+  # - job_name: 'cAdvisor'
+  #   scrape_interval: 15s
+  #   static_configs:
+  #     - targets: ['localhost:5601']
+
+  # - job_name: 'spring-boot-angular-jboss'
+  #   metrics_path: 'springboot2-jpa-crud-example-0.0.1-SNAPSHOT/actuator/prometheus'
+  #   scrape_interval: 15s
+  #   static_configs:
+  #     - targets: ['13.91.128.16:8080']
+
+  ## pet clinic services start
+  - job_name: api-gateway
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['13.91.128.16:8080']
+
+  - job_name: customers-service
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['13.91.128.16:8081']
+
+  - job_name: visits-service
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['13.91.128.16:8082']
+
+  - job_name: vets-service
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['13.91.128.16:8083']
+  ## pet clinic services end
+
+  - job_name: 'node_exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['13.91.128.16:9100']
+
+  - job_name: 'Container'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['13.91.128.16:9323']
+
+  - job_name: 'Database'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['13.91.128.16:4000']
+
+  - job_name: 'node_exporter_01'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['13.64.96.103:9100']

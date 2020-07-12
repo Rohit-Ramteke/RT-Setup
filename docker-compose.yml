@@ -1,0 +1,85 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    ports:
+      - 443:443
+    container_name: nginx
+    # restart: always
+    # network_mode: host
+    volumes:
+      - ./nginx:/etc/nginx:ro
+      - ./certs:/root/certs/13.64.96.103
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+      # - ./nginx/html/:/etc/nginx/html/
+  prometheus:
+    image: prom/prometheus
+    ports:
+     - '9090:9090'
+    container_name: prometheus
+    # restart: always
+    # network_mode: host
+    volumes:
+      - '$RT_HOME/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+      - '$RT_HOME/prometheus/rules.yml:/etc/prometheus/rules.yml'
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.route-prefix=/
+      - --web.external-url=http://13.64.96.103/prometheus
+  alertmanager:
+    image: prom/alertmanager
+    # network_mode: host
+    container_name: alertmanager
+    volumes:
+      - '$RT_HOME/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml'
+    ports:
+     - '9093:9093'
+    # restart: always
+  grafana:
+    user: '0'
+    image: kartik468/grafana:v7.0.1
+    ports:
+     - '3000:3000'
+    container_name: grafana
+    # restart: always
+    # network_mode: host
+    depends_on:
+      - prometheus
+    volumes:
+      - '$RT_HOME/grafana/grafana_storage:/var/lib/grafana/'
+      - '$RT_HOME/grafana/config/grafana.ini:/etc/grafana/grafana.ini'
+      - '$RT_HOME/grafana/provisioning/:/etc/grafana/provisioning/'
+  web-app:
+    image: kartik468/web-app:v0.0.1
+    ports:
+     - '3001:3001'
+    container_name: web-app
+    # restart: always
+    # network_mode: host
+    volumes:
+      - '$RT_HOME/web_app/web-interface-grafana-express/.env:/usr/src/app/web-interface-grafana-express/.env'
+      - '$RT_HOME/web_app/web-interface-grafana-express/ui-config.json:/usr/src/app/web-interface-grafana-express/dist/ui-config.json'
+      - '$RT_HOME/web_app/web-interface-grafana-express/MRR_Dashboard.json:/usr/src/app/web-interface-grafana-express/dist/jsons/MRR_Dashboard.json'
+  # portainer:
+  #   image: portainer/portainer
+  #   ports:
+  #     - '9000:9000'
+  #     - '8000:8000'
+  #   container_name: portainer
+  #   restart: always
+  #   volumes:
+  #     - '/var/run/docker.sock:/var/run/docker.sock'
+  #     - '$RT_HOME/portainer_data:/data'
+  # cadvisor:
+  #   image: google/cadvisor:latest
+  #   container_name: cadvisor
+  #   ports:
+  #     - '8080:8080'
+  #   volumes:
+  #     - '/:/rootfs:ro'
+  #     - '/var/run:/var/run:rw'
+  #     - '/sys:/sys:ro'
+  #     - '/var/lib/docker/:/var/lib/docker:ro'
+
+
